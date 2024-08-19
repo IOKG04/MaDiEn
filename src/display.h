@@ -1,3 +1,10 @@
+/************************************************\
+|           Terminal utility functions           |
+|                                                |
+| Copyright (c) 2024, https://github.com/IOKG04  |
+| Licensed under MIT-Festival-Light (at LICENSE) |
+\************************************************/
+
 #ifndef MDE_DISPLAY_H__
 #define MDE_DISPLAY_H__
 

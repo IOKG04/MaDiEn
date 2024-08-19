@@ -1,41 +1,63 @@
 CC = gcc
 
-madien: madien_setup madien_o madien_h
-	@echo "Creating MaDiEn archive file"
-	ar rcs bin/MaDiEn/madien.a obj/MaDiEn/*.o
+BIN_DIR = bin
+OBJ_DIR = obj
 
-madien_setup:
-	@echo "Setting up MaDiEn directories"
-	mkdir -p bin/MaDiEn/
-	mkdir -p obj/MaDiEn/
+# MaDiEn directories and files
+MSD = src
+MOD = $(OBJ_DIR)/MaDiEn
+MLD = $(BIN_DIR)/MaDiEn
+MDE_SRC_FILES = $(MSD)/display.c $(MSD)/buffer.c
+MDE_OBJ_FILES = $(patsubst $(MSD)/%.c,$(MOD)/%.o,$(MDE_SRC_FILES))
+MDE_HFILES = $(MSD)/display.h $(MSD)/buffer.h
+MDE_LIB_HFILES = $(patsubst $(MSD)/%.h,$(MLD)/%.h,$(MDE_HFILES))
+MDE_TARGET = $(MLD)/madien.a
+# MaDiEn compiler flags
+MDE_CFLAGS = -Wall
 
-madien_o:
-	@echo "Compiling MaDiEn source to object files"
-	$(CC) -o obj/MaDiEn/display.o src/display.c -c
-	$(CC) -o obj/MaDiEn/buffer.o src/buffer.c -c
+# tests directories
+TSD = tests
+TBD = $(BIN_DIR)/tests
+TESTS_NAMES = lines
+# tests compiler flags
+T_CFLAGS = -Wall
 
-madien_h:
-	@echo "Copying MaDiEn header files"
-	cp src/display.h bin/MaDiEn/display.h
-	cp src/buffer.h bin/MaDiEn/buffer.h
+.PHONY: all
+all: madien tests_all
 
-tests_all: tests_lines
+# MaDiEn related targets
+.PHONY: madien
+madien: $(MDE_TARGET) $(MDE_LIB_HFILES)
 
-tests_lines: madien
-	@echo "Copying MaDiEn library to tests/lines/madien/"
-	cp -r bin/MaDiEn/ tests/lines/madien/
-	@echo "Setting up tests/lines directories"
-	mkdir -p bin/tests/lines/
-	@echo "Compiling tests/lines"
-	$(CC) -o bin/tests/lines/lines tests/lines/main.c tests/lines/madien/madien.a
+$(MDE_TARGET): $(MDE_OBJ_FILES)
+	@mkdir -p $(MLD)
+	ar rcs $(MDE_TARGET) $(MDE_OBJ_FILES)
 
-clean: clean_obj_bin clean_tests
+$(MOD)/%.o: $(MSD)/%.c
+	@mkdir -p $(MOD)
+	$(CC) -o $@ $< -c $(MDE_CFLAGS)
 
-clean_obj_bin:
-	rm -rf bin/
-	rm -rf obj/
+$(MLD)/%.h: $(MSD)/%.h
+	@mkdir -p $(MLD)
+	cp $< $@
 
+# tests related targets
+.PHONY: tests_all
+tests_all: $(TESTS_NAMES)
+
+.PHONY: $(TESTS_NAMES)
+$(foreach tst,$(TESTS_NAMES),$(tst): $(TBD)/$(tst))
+
+$(TBD)/%: $(TSD)/%/main.c madien
+	@mkdir -p $(TBD)
+	cp -r $(MLD) $(TSD)/$*/madien
+	gcc -o $@ $< $(TSD)/$*/madien/madien.a $(T_CFLAGS)
+
+# cleaning related targets
+.PHONY: clean
+clean: clean_tests
+	rm -rf $(OBJ_DIR) $(BIN_DIR)
+
+.PHONY: clean_tests
 clean_tests:
-	rm -rf tests/lines/madien/
-
-.PHONY: madien madien_setup madien_o madien_h tests_all tests_lines clean clean_obj_bin clean_tests
+	rm -rf $(foreach tst,$(TESTS_NAMES),$(TSD)/$(tst)/madien)

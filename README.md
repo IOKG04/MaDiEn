@@ -16,6 +16,9 @@ The engine should incoorporate anything from sprites to post processing effects 
   - [x] Displaying a buffer in the terminal
     - [ ] Enabling (true) color
   - [ ] Combining buffers in different ways
-  - [ ] Sprites (basically just buffers)
-    - [ ] Loading sprite data from image files (.qoi probably)
+    - [ ] Transparency
+  - [ ] Other kinds of buffers / specialized buffers
+    - [ ] Text fields
+    - [ ] Number fields
+  - [ ] Loading sprite data from image files (.qoi probably)
 - [ ] Post processing

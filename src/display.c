@@ -1,3 +1,10 @@
+/************************************************\
+|          Implementations of display.h          |
+|                                                |
+| Copyright (c) 2024, https://github.com/IOKG04  |
+| Licensed under MIT-Festival-Light (at LICENSE) |
+\************************************************/
+
 #include "display.h"
 
 #include <stdio.h>
@@ -7,9 +14,6 @@
 
 // data for old termios
 struct termios old_termios;
-
-// gets the index if a pixel in buffer space
-static inline size_t s_get_index(size_t x, size_t y);
 
 
 /******************\
@@ -27,15 +31,15 @@ void setup_screen(){
     // clear screen
     printf("\x1b[?25l\x1b[2J");
 
-    #if LICENSING_MESSAGE
-    // display MaDiEn licensing information
-    #if LICENSING_MESSAGE_CHANGE == 0
-    printf("\x1b[HMaDiEn Copyright (c) 2024, https://github.com/IOKG04\nThis software uses code licensed under the MIT-Festival-Light License (https://github.com/IOKG04/Licenses/blob/master/MIT-FL/MIT-Festival-Light).\n");
-    #else
-    printf("\x1b[HMaDiEn Copyright (c) 2024, https://github.com/IOKG04, modified by creator of this software\nThis software uses code licensed under the MIT-Festival-Light License (https://github.com/IOKG04/Licenses/blob/master/MIT-FL/MIT-Festival-Light).\n");
-    #endif
-    sleep(LICENSING_MESSAGE_DELAY);
-    printf("\x1b[2J");
+    #if MDE_LICENSING_MESSAGE
+        // display MaDiEn licensing information
+        #if MDE_LICENSING_MESSAGE_CHANGE == 0
+            printf("\x1b[HThis software uses MaDiEn Copyright (c) 2024, https://github.com/IOKG04, licensed under the MIT-Festival-Light License (https://github.com/IOKG04/MaDiEn/blob/master/LICENSE).\n");
+        #else
+            printf("\x1b[HThis software uses a modified version of MaDiEn Copyright (c) 2024, https://github.com/IOKG04, licensed under the MIT-Festival-Light License (https://github.com/IOKG04/MaDiEn/blob/master/LICENSE).\n");
+        #endif
+        sleep(MDE_LICENSING_MESSAGE_DELAY);
+        printf("\x1b[2J");
     #endif
 }
 // undos setup_screen()

@@ -1,3 +1,10 @@
+/************************************************\
+|          Implementations for buffer.h          |
+|                                                |
+| Copyright (c) 2024, https://github.com/IOKG04  |
+| Licensed under MIT-Festival-Light (at LICENSE) |
+\************************************************/
+
 #include "buffer.h"
 
 #include <stdio.h>
@@ -38,8 +45,8 @@ void eb_free(ebuffer_t *buf){
 // sets element in buf at {x, y} to e
 int eb_set(ebuffer_t *buf, size_t x, size_t y, screen_element_t e){
     size_t i = eb_get_index(x, y, (*buf));
-    #if BUFFER_INDEX_CHECK
-    if(i >= buf->width * buf->height) return 1;
+    #if MDE_BUFFER_INDEX_CHECK
+        if(i >= buf->width * buf->height) return 1;
     #endif
     buf->data[i] = e;
     return 0;
@@ -47,17 +54,24 @@ int eb_set(ebuffer_t *buf, size_t x, size_t y, screen_element_t e){
 // sets all elements in buf to e
 void eb_clear(ebuffer_t *buf, screen_element_t e){
     for(size_t i = 0; i < b_size((*buf)); ++i){
-	buf->data[i] = e;
+        buf->data[i] = e;
     }
 }
 
-// prints buf to terminal, such that {0, 0} in buf space is at {offs_x, offs_y} in terminal space
-void eb_draw(ebuffer_t buf, size_t offs_x, size_t offs_y){
-    for(size_t y = 0; y < buf.height; ++y){
-	printf("\x1b[%lu;%luH", offs_y + y + 1, offs_x + 1);
-	for(size_t x = 0; x < buf.width; ++x){
-	    putchar(buf.data[x + buf.width * y].c);
-	}
+// prints buf to terminal, such that {0, 0} in buf space is at {offs_x, offs_y} in terminal space (zero based)
+void eb_draw(ebuffer_t buf, int offs_x, int offs_y){
+    for(int y = 0; y < buf.height; ++y){
+        if(offs_y + y < 0) continue;
+        printf("\x1b[%i;%iH", offs_y + y + 1, (offs_x <= 0 ? 1 : offs_x + 1));
+        for(int x = 0; x < buf.width; ++x){
+            if(offs_x + x < 0) continue;
+            #if MDE_DRAW_NULL_AS_SPACE
+                if(SE_IS_NULL(buf.data[x + buf.width * y])) putchar(SE_SPACE.c);
+                else                                        putchar(buf.data[x + buf.width * y].c);
+            #else
+                putchar(buf.data[x + buf.width * y].c);
+            #endif
+        }
     }
 }
 
