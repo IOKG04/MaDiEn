@@ -14,33 +14,59 @@
 
 // data for old termios
 struct termios old_termios;
+// flags
+mde_dflags_t display_flags;
 
 
 /******************\
 | PUBLIC FUNCTIONS |
 \******************/
 
-// initializes buffer and terminal
-void setup_screen(){
+// initializes terminal
+void setup_screen(mde_dflags_t flags){
     // set termios
     tcgetattr(fileno(stdin), &old_termios);
     struct termios new_termios = old_termios;
     new_termios.c_lflag &= ~(ICANON | ECHO);
     tcsetattr(fileno(stdin), TCSANOW, &new_termios);
 
-    // clear screen
-    printf("\x1b[?25l\x1b[2J");
+    // set flags
+    set_flags_screen(flags);
 
+    // apply flags
+    reset_screen();
+
+    // show licensing message
     #if MDE_LICENSING_MESSAGE
         // display MaDiEn licensing information
         #if MDE_LICENSING_MESSAGE_CHANGE == 0
-            printf("\x1b[HThis software uses MaDiEn Copyright (c) 2024, https://github.com/IOKG04, licensed under the MIT-Festival-Light License (https://github.com/IOKG04/MaDiEn/blob/master/LICENSE).\n");
+            printf("\x1b[2J\x1b[HThis software uses MaDiEn Copyright (c) 2024, https://github.com/IOKG04, licensed under the MIT-Festival-Light License (https://github.com/IOKG04/MaDiEn/blob/master/LICENSE).\n");
         #else
-            printf("\x1b[HThis software uses a modified version of MaDiEn Copyright (c) 2024, https://github.com/IOKG04, licensed under the MIT-Festival-Light License (https://github.com/IOKG04/MaDiEn/blob/master/LICENSE).\n");
+            printf("\x1b[2J\x1b[HThis software uses a modified version of MaDiEn Copyright (c) 2024, https://github.com/IOKG04, licensed under the MIT-Festival-Light License (https://github.com/IOKG04/MaDiEn/blob/master/LICENSE).\n");
         #endif
         sleep(MDE_LICENSING_MESSAGE_DELAY);
         printf("\x1b[2J");
     #endif
+}
+// sets display flags
+void set_flags_screen(mde_dflags_t flags){
+    display_flags = flags;
+}
+// returns current display flags
+mde_dflags_t get_flags_screen(){
+    return display_flags;
+}
+// resets screen to the definitions given to setup_screen()
+void reset_screen(){
+    printf("\x1b[22m");
+    // hide cursor
+    if(!(display_flags & MDE_DCURSOR)) printf("\x1b[?25l");
+    // clear screen
+    if(!(display_flags & MDE_DNCLEAR)) printf("\x1b[2J");
+    // set / unset bold
+    if(display_flags & MDE_DBOLD)      printf("\x1b[1m");
+    // set cursor position to {0, 0}
+    if(!(display_flags & MDE_DNHOME))  printf("\x1b[H");
 }
 // undos setup_screen()
 void revert_screen(){

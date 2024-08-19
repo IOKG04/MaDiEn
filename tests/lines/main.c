@@ -3,7 +3,7 @@
 #include "madien/buffer.h"
 
 int main(){
-    setup_screen();
+    setup_screen(MDE_DTUI);
 
     ebuffer_t buf = {};
     if(eb_init(&buf, 20, 10)){
@@ -20,6 +20,8 @@ int main(){
         }
     }
     eb_draw(buf, 0, 0);
+
+    eb_free(&buf);
 
     revert_screen();
 }

@@ -18,7 +18,7 @@ MDE_CFLAGS = -Wall
 # tests directories
 TSD = tests
 TBD = $(BIN_DIR)/tests
-TESTS_NAMES = lines
+TESTS_NAMES = lines bold_unbold
 # tests compiler flags
 T_CFLAGS = -Wall
 
@@ -46,10 +46,11 @@ $(MLD)/%.h: $(MSD)/%.h
 tests_all: $(TESTS_NAMES)
 
 .PHONY: $(TESTS_NAMES)
-$(foreach tst,$(TESTS_NAMES),$(tst): $(TBD)/$(tst))
+$(TESTS_NAMES): %: $(TBD)/%
 
-$(TBD)/%: $(TSD)/%/main.c madien
+$(TBD)/%: $(TSD)/%/main.c $(MDE_TARGET) $(MDE_LIB_HFILES)
 	@mkdir -p $(TBD)
+	@rm -rf $(TSD)/$*/madien
 	cp -r $(MLD) $(TSD)/$*/madien
 	gcc -o $@ $< $(TSD)/$*/madien/madien.a $(T_CFLAGS)
 

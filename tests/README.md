@@ -19,3 +19,9 @@ Expected output:
                 # # 
                   # 
 ```
+
+### bold_unbold
+
+Expected output:  
+A `#` which changes whether it's bold or not every time the user presses a key.  
+Press `q` to exit.
