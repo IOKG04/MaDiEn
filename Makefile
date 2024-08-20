@@ -18,7 +18,7 @@ MDE_CFLAGS = -Wall
 # tests directories
 TSD = tests
 TBD = $(BIN_DIR)/tests
-TESTS_NAMES = lines bold_unbold
+TESTS_NAMES = lines bold_unbold tictactoe
 # tests compiler flags
 T_CFLAGS = -Wall
 

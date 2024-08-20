@@ -13,7 +13,7 @@ int main(){
     eb_clear(&buf, (screen_element_t){'#'});
 
     do{
-        eb_draw(buf, 0, 0);
+        eb_print(buf, 0, 0);
 
         set_flags_screen(get_flags_screen() ^ MDE_DBOLD);
         reset_screen();

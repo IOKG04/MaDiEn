@@ -20,6 +20,6 @@
 // if you intend to disable this, make sure you include a licensing message somewhere else
 
 // whether to draw SE_NULL as SE_SPACE
-#define MDE_DRAW_NULL_AS_SPACE 0
+#define MDE_PRINT_NULL_AS_SPACE 1
 
 #endif

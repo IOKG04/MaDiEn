@@ -19,7 +19,7 @@ int main(){
             }
         }
     }
-    eb_draw(buf, 0, 0);
+    eb_print(buf, 0, 0);
 
     eb_free(&buf);
 

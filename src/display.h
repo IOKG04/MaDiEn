@@ -19,11 +19,12 @@
 // does NOT set cursor position to {0, 0}
 #define MDE_DNHOME  0b00001000
 
-// recommended default for TUI applications
+// recommended default flags for TUI applications
 #define MDE_DTUI (0)
-// recommended default for ascii graphics
+// recommended default flags for ascii graphics
 #define MDE_DGRAPHICS (MDE_DBOLD)
 
+// type for screen flags
 typedef uint8_t mde_dflags_t;
 
 // initializes terminal with given flags
