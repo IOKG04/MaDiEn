@@ -1,3 +1,10 @@
+/************************************************\
+|            Prints 10 vertical lines            |
+|                                                |
+| Licensed under WTFPL, available at             |
+| LICENSES/WTFPL                                 |
+\************************************************/
+
 #include <stdlib.h>
 #include "madien/display.h"
 #include "madien/buffer.h"

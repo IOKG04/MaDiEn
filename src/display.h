@@ -2,13 +2,14 @@
 |           Terminal utility functions           |
 |                                                |
 | Copyright (c) 2024, https://github.com/IOKG04  |
-| Licensed under MIT-Festival-Light (at LICENSE) |
+| Licensed under MIT-Festival-Light, available   |
+| at LICENSES/MIT-FL                             |
 \************************************************/
 
 #ifndef MDE_DISPLAY_H__
 #define MDE_DISPLAY_H__
 
-#include <stdint.h>
+#include "config.h"
 
 // sets font as bold
 #define MDE_DBOLD   0b00000001
@@ -24,15 +25,12 @@
 // recommended default flags for ascii graphics
 #define MDE_DGRAPHICS (MDE_DBOLD)
 
-// type for screen flags
-typedef uint8_t mde_dflags_t;
-
 // initializes terminal with given flags
-void setup_screen(mde_dflags_t flags);
+void setup_screen(mde_flags_t flags);
 // sets display flags
-void set_flags_screen(mde_dflags_t flags);
+void set_flags_screen(mde_flags_t flags);
 // returns current display flags
-mde_dflags_t get_flags_screen();
+mde_flags_t get_flags_screen();
 // resets screen to current display flags
 void reset_screen();
 // undos setup_screen()

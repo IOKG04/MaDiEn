@@ -2,7 +2,8 @@
 |          Implementations for buffer.h          |
 |                                                |
 | Copyright (c) 2024, https://github.com/IOKG04  |
-| Licensed under MIT-Festival-Light (at LICENSE) |
+| Licensed under MIT-Festival-Light, available   |
+| at LICENSES/MIT-FL                             |
 \************************************************/
 
 #include "buffer.h"
@@ -28,6 +29,9 @@ static inline size_t b_get_index(size_t x, size_t y, size_t width);
 
 // initializes buf to size {width, height}
 int eb_init(ebuffer_t *buf, size_t width, size_t height){
+    #if MDE_BUFFER_ALLOC_CHECK
+        if(buf->data != NULL) return 2;
+    #endif
     buf->width = width;
     buf->height = height;
     buf->data = malloc(sizeof(screen_element_t) * b_size((*buf)));
@@ -36,6 +40,9 @@ int eb_init(ebuffer_t *buf, size_t width, size_t height){
 }
 // deinitialized members of buf
 void eb_free(ebuffer_t *buf){
+    #if MDE_BUFFER_ALLOC_CHECK
+        if(buf->data == NULL) return;
+    #endif
     free(buf->data);
     buf->data = NULL;
     buf->width = 0;
@@ -58,7 +65,7 @@ void eb_clear(ebuffer_t *buf, screen_element_t e){
     }
 }
 // draws src onto dest, such that {0, 0} in src space is {offs_x, offs_y} is dest space
-void eb_draw(ebuffer_t *dest, ebuffer_t src, int offs_x, int offs_y, mde_bflags_t flags){
+void eb_draw(ebuffer_t *dest, ebuffer_t src, int offs_x, int offs_y, mde_flags_t flags){
     for(int x = 0; x < src.width; ++x){
         if(offs_x + x < 0 || offs_x + x >= dest->width) continue;
         for(int y = 0; y < src.height; ++y){

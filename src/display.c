@@ -1,8 +1,9 @@
 /************************************************\
-|          Implementations of display.h          |
+|          Implementations for display.h         |
 |                                                |
 | Copyright (c) 2024, https://github.com/IOKG04  |
-| Licensed under MIT-Festival-Light (at LICENSE) |
+| Licensed under MIT-Festival-Light, available   |
+| at LICENSES/MIT-FL                             |
 \************************************************/
 
 #include "display.h"
@@ -15,7 +16,7 @@
 // data for old termios
 struct termios old_termios;
 // flags
-mde_dflags_t display_flags;
+mde_flags_t display_flags;
 
 
 /******************\
@@ -23,7 +24,7 @@ mde_dflags_t display_flags;
 \******************/
 
 // initializes terminal
-void setup_screen(mde_dflags_t flags){
+void setup_screen(mde_flags_t flags){
     // set termios
     tcgetattr(fileno(stdin), &old_termios);
     struct termios new_termios = old_termios;
@@ -49,11 +50,11 @@ void setup_screen(mde_dflags_t flags){
     #endif
 }
 // sets display flags
-void set_flags_screen(mde_dflags_t flags){
+void set_flags_screen(mde_flags_t flags){
     display_flags = flags;
 }
 // returns current display flags
-mde_dflags_t get_flags_screen(){
+mde_flags_t get_flags_screen(){
     return display_flags;
 }
 // resets screen to the definitions given to setup_screen()

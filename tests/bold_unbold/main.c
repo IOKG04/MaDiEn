@@ -1,3 +1,10 @@
+/************************************************\
+|      Prints bold and normal '#' character      |
+|                                                |
+| Licensed under WTFPL, available at             |
+| LICENSES/WTFPL                                 |
+\************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "madien/display.h"

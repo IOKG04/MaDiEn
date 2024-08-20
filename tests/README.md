@@ -8,6 +8,21 @@ I will make more as I add more features.
 1. lines
 2. bold_unbold
 3. tictactoe
+4. acouplestrings
+
+### acouplestrings
+
+Expected output:  
+```
+Hello world!....
+Hello world!
+Hello world!  ..
+Hello wo........
+........Hello wo
+o world!........
+o wo............
+Hello world!
+```
 
 ### bold_unbold
 

@@ -2,14 +2,15 @@
 |       Buffers types and related functions      |
 |                                                |
 | Copyright (c) 2024, https://github.com/IOKG04  |
-| Licensed under MIT-Festival-Light (at LICENSE) |
+| Licensed under MIT-Festival-Light, available   |
+| at LICENSES/MIT-FL                             |
 \************************************************/
 
 #ifndef MDE_BUFFER_H__
 #define MDE_BUFFER_H__
 
-#include <stdint.h>
 #include <stddef.h>
+#include "config.h"
 
 // screen_element_t with empty space
 #define SE_SPACE ((screen_element_t){' '})
@@ -19,7 +20,7 @@
 // returns 1 if e is null equivalent
 #define SE_IS_NULL(e) (e.c == '\0')
 
-// element in a screen buffer
+// element in an element buffer
 typedef struct{
     char  c;
 } screen_element_t;
@@ -37,9 +38,6 @@ typedef struct{
 // recommended default flags for _b_draw() and _b_print()
 #define MDE_BDEFAULT (0)
 
-// type for _b_draw() and _b_print() flags
-typedef uint8_t mde_bflags_t;
-
 // initializes buf to size {width, height}
 int eb_init(ebuffer_t *buf, size_t width, size_t height);
 // deinitialized members of buf
@@ -50,7 +48,7 @@ int eb_set(ebuffer_t *buf, size_t x, size_t y, screen_element_t e);
 // sets all elements in buf to e
 void eb_clear(ebuffer_t *buf, screen_element_t e);
 // draws src onto dest, such that {0, 0} in src space is {offs_x, offs_y} is dest space
-void eb_draw(ebuffer_t *dest, ebuffer_t src, int offs_x, int offs_y, mde_bflags_t flags);
+void eb_draw(ebuffer_t *dest, ebuffer_t src, int offs_x, int offs_y, mde_flags_t flags);
 
 // prints buf to terminal, such that {0, 0} in buf space is at {offs_x, offs_y} in terminal space (zero based)
 void eb_print(ebuffer_t buf, int offs_x, int offs_y);

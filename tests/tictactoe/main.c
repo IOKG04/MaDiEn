@@ -1,7 +1,31 @@
+/************************************************\
+|     A game of tictactoe between two humans     |
+|                                                |
+| Licensed under WTFPL, available at             |
+| LICENSES/WTFPL                                 |
+\************************************************/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include "madien/display.h"
 #include "madien/buffer.h"
+
+#define DRAW_ROUTINE eb_clear(&b_display, (screen_element_t){'.'}); \
+    eb_draw(&b_display, b_vertline, 3, 0, MDE_BDEFAULT); \
+    eb_draw(&b_display, b_vertline, 7, 0, MDE_BDEFAULT); \
+    eb_draw(&b_display, b_horiline, 0, 3, MDE_BDEFAULT); \
+    eb_draw(&b_display, b_horiline, 0, 7, MDE_BDEFAULT); \
+    for(int x = 0; x < 3; ++x){ \
+        for(int y = 0; y < 3; ++y){ \
+            if(board[y][x] == bs_x){ \
+                eb_draw(&b_display, b_x, x * 4, y * 4, MDE_BDRAW_OVER); \
+            } \
+            else if(board[y][x] == bs_o){ \
+                eb_draw(&b_display, b_o, x * 4, y * 4, MDE_BDRAW_OVER); \
+            } \
+        } \
+    } \
+    eb_print(b_display, 1, 1)
 
 typedef enum{
     bs_none = 0,
@@ -69,23 +93,7 @@ int main(){
     int tt = 0;
     boardstate winner = bs_none;
     do{
-        // draw to and print b_display
-        eb_clear(&b_display, (screen_element_t){'.'});
-        eb_draw(&b_display, b_vertline, 3, 0, MDE_BDEFAULT);
-        eb_draw(&b_display, b_vertline, 7, 0, MDE_BDEFAULT);
-        eb_draw(&b_display, b_horiline, 0, 3, MDE_BDEFAULT);
-        eb_draw(&b_display, b_horiline, 0, 7, MDE_BDEFAULT);
-        for(int x = 0; x < 3; ++x){
-            for(int y = 0; y < 3; ++y){
-                if(board[y][x] == bs_x){
-                    eb_draw(&b_display, b_x, x * 4, y * 4, MDE_BDRAW_OVER);
-                }
-                else if(board[y][x] == bs_o){
-                    eb_draw(&b_display, b_o, x * 4, y * 4, MDE_BDRAW_OVER);
-                }
-            }
-        }
-        eb_print(b_display, 1, 1);
+        DRAW_ROUTINE;
 
         // get user input
         printf("\n\n%c's turn. Where do you place (numpad)? ", (tt % 2) == 0 ? 'X' : 'O');
@@ -107,23 +115,8 @@ int main(){
 
     reset_screen();
 
-    // draw to and print b_display
-    eb_clear(&b_display, (screen_element_t){'.'});
-    eb_draw(&b_display, b_vertline, 3, 0, MDE_BDEFAULT);
-    eb_draw(&b_display, b_vertline, 7, 0, MDE_BDEFAULT);
-    eb_draw(&b_display, b_horiline, 0, 3, MDE_BDEFAULT);
-    eb_draw(&b_display, b_horiline, 0, 7, MDE_BDEFAULT);
-    for(int x = 0; x < 3; ++x){
-        for(int y = 0; y < 3; ++y){
-            if(board[y][x] == bs_x){
-                eb_draw(&b_display, b_x, x * 4, y * 4, MDE_BDRAW_OVER);
-            }
-            else if(board[y][x] == bs_o){
-                eb_draw(&b_display, b_o, x * 4, y * 4, MDE_BDRAW_OVER);
-            }
-        }
-    }
-    eb_print(b_display, 1, 1);
+    DRAW_ROUTINE;
+
     if(winner == bs_draw) printf("\n\nA draw... guess you too are too good\nor bad\n");
     else printf("\n\n%c won!\n", (--tt % 2) == 0 ? 'X' : 'O');
 
