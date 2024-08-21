@@ -27,6 +27,9 @@
 // whether to draw SE_NULL as SE_SPACE
 #define MDE_PRINT_NULL_AS_SPACE 1
 
+// whether to use true color
+#define MDE_TRUE_COLOR 1
+
 typedef uint8_t mde_flags_t;
 
 #endif

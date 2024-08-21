@@ -69,6 +69,12 @@ void reset_screen(){
     // set cursor position to {0, 0}
     if(!(display_flags & MDE_DNHOME))  printf("\x1b[H");
 }
+#if MDE_TRUE_COLOR
+    // resets foreground color
+    void reset_color(){
+        printf("\x1b[39m");
+    }
+#endif
 // undos setup_screen()
 void revert_screen(){
     // reset termios

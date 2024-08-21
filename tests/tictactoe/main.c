@@ -10,7 +10,7 @@
 #include "madien/display.h"
 #include "madien/buffer.h"
 
-#define DRAW_ROUTINE eb_clear(&b_display, (screen_element_t){'.'}); \
+#define DRAW_ROUTINE eb_clear(&b_display, (screen_element_t){'.', 0x80, 0x80, 0x80}); \
     eb_draw(&b_display, b_vertline, 3, 0, MDE_BDEFAULT); \
     eb_draw(&b_display, b_vertline, 7, 0, MDE_BDEFAULT); \
     eb_draw(&b_display, b_horiline, 0, 3, MDE_BDEFAULT); \
@@ -56,14 +56,14 @@ boardstate who_won(){
 }
 
 int main(){
-    setup_screen(MDE_DTUI | MDE_DCURSOR);
+    setup_screen(MDE_DTUI | MDE_DCURSOR | MDE_DTRUECOLOR);
 
     // initialize buffers
-    ebuffer_t b_display,
-              b_x,
-              b_o,
-              b_vertline,
-              b_horiline;
+    ebuffer_t b_display  = {},
+              b_x        = {},
+              b_o        = {},
+              b_vertline = {},
+              b_horiline = {};
     if(eb_init(&b_display, 11, 11) ||
        eb_init(&b_x, 3, 3) ||
        eb_init(&b_o, 3, 3) ||
@@ -74,21 +74,21 @@ int main(){
     }
 
     // draw "sprites" to buffers
-    eb_set(&b_x, 0, 0, (screen_element_t){'X'});
-    eb_set(&b_x, 2, 0, (screen_element_t){'X'});
-    eb_set(&b_x, 1, 1, (screen_element_t){'X'});
-    eb_set(&b_x, 0, 2, (screen_element_t){'X'});
-    eb_set(&b_x, 2, 2, (screen_element_t){'X'});
-    eb_set(&b_o, 0, 0, (screen_element_t){'O'});
-    eb_set(&b_o, 1, 0, (screen_element_t){'O'});
-    eb_set(&b_o, 2, 0, (screen_element_t){'O'});
-    eb_set(&b_o, 0, 1, (screen_element_t){'O'});
-    eb_set(&b_o, 2, 1, (screen_element_t){'O'});
-    eb_set(&b_o, 0, 2, (screen_element_t){'O'});
-    eb_set(&b_o, 1, 2, (screen_element_t){'O'});
-    eb_set(&b_o, 2, 2, (screen_element_t){'O'});
-    eb_clear(&b_vertline, (screen_element_t){'|'});
-    eb_clear(&b_horiline, (screen_element_t){'-'});
+    eb_set(&b_x, 0, 0, (screen_element_t){'X', 255, 255, 0});
+    eb_set(&b_x, 2, 0, (screen_element_t){'X', 255, 255, 0});
+    eb_set(&b_x, 1, 1, (screen_element_t){'X', 255, 255, 0});
+    eb_set(&b_x, 0, 2, (screen_element_t){'X', 255, 255, 0});
+    eb_set(&b_x, 2, 2, (screen_element_t){'X', 255, 255, 0});
+    eb_set(&b_o, 0, 0, (screen_element_t){'O', 0xbb, 0x88, 0xff});
+    eb_set(&b_o, 1, 0, (screen_element_t){'O', 0xbb, 0x88, 0xff});
+    eb_set(&b_o, 2, 0, (screen_element_t){'O', 0xbb, 0x88, 0xff});
+    eb_set(&b_o, 0, 1, (screen_element_t){'O', 0xbb, 0x88, 0xff});
+    eb_set(&b_o, 2, 1, (screen_element_t){'O', 0xbb, 0x88, 0xff});
+    eb_set(&b_o, 0, 2, (screen_element_t){'O', 0xbb, 0x88, 0xff});
+    eb_set(&b_o, 1, 2, (screen_element_t){'O', 0xbb, 0x88, 0xff});
+    eb_set(&b_o, 2, 2, (screen_element_t){'O', 0xbb, 0x88, 0xff});
+    eb_clear(&b_vertline, (screen_element_t){'|', 255, 255, 255});
+    eb_clear(&b_horiline, (screen_element_t){'-', 255, 255, 255});
 
     int tt = 0;
     boardstate winner = bs_none;
@@ -96,6 +96,7 @@ int main(){
         DRAW_ROUTINE;
 
         // get user input
+        reset_color();
         printf("\n\n%c's turn. Where do you place (numpad)? ", (tt % 2) == 0 ? 'X' : 'O');
         int c = getchar();
         switch(c){
@@ -117,7 +118,8 @@ int main(){
 
     DRAW_ROUTINE;
 
-    if(winner == bs_draw) printf("\n\nA draw... guess you too are too good\nor bad\n");
+    reset_color();
+    if(winner == bs_draw) printf("\n\nA draw... guess you two are too good\nor bad\n");
     else printf("\n\n%c won!\n", (--tt % 2) == 0 ? 'X' : 'O');
 
     eb_free(&b_display);

@@ -12,6 +12,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <stddef.h>
+#include "display.h"
 #include "config.h"
 
 // returns 1D index for {x, y} in buf
@@ -85,12 +86,17 @@ void eb_print(ebuffer_t buf, int offs_x, int offs_y){
         printf("\x1b[%i;%iH", offs_y + y + 1, (offs_x <= 0 ? 1 : offs_x + 1));
         for(int x = 0; x < buf.width; ++x){
             if(offs_x + x < 0) continue;
-            #if MDE_PRINT_NULL_AS_SPACE
-                if(SE_IS_NULL(buf.data[x + buf.width * y])) putchar(SE_SPACE.c);
-                else                                        putchar(buf.data[x + buf.width * y].c);
-            #else
-                putchar(buf.data[x + buf.width * y].c);
+            #define b_dat (buf.data[x + buf.width * y])
+            #if MDE_TRUE_COLOR
+                if(get_flags_screen() & MDE_DTRUECOLOR) printf("\x1b[38;2;%i;%i;%im", b_dat.r, b_dat.g, b_dat.b);
             #endif
+            #if MDE_PRINT_NULL_AS_SPACE
+                if(SE_IS_NULL(b_dat)) putchar(SE_SPACE.c);
+                else                  putchar(b_dat.c);
+            #else
+                putchar(b_dat.c);
+            #endif
+            #undef b_dat
         }
     }
 }

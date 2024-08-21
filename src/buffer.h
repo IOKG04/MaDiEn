@@ -12,10 +12,22 @@
 #include <stddef.h>
 #include "config.h"
 
+#if MDE_TRUE_COLOR
+    #include <stdint.h>
+#endif
+
 // screen_element_t with empty space
-#define SE_SPACE ((screen_element_t){' '})
+#if MDE_TRUE_COLOR
+    #define SE_SPACE ((screen_element_t){' ', 255, 255, 255})
+#else
+    #define SE_SPACE ((screen_element_t){' '})
+#endif
 // screen_element_t containing no data
-#define SE_NULL  ((screen_element_t){'\0'})
+#if MDE_TRUE_COLOR
+    #define SE_NULL  ((screen_element_t){'\0', 0, 0, 0})
+#else
+    #define SE_NULL  ((screen_element_t){'\0'})
+#endif
 
 // returns 1 if e is null equivalent
 #define SE_IS_NULL(e) (e.c == '\0')
@@ -23,6 +35,11 @@
 // element in an element buffer
 typedef struct{
     char  c;
+    #if MDE_TRUE_COLOR
+        uint8_t r,
+                g,
+                b;
+    #endif
 } screen_element_t;
 
 // buffer containing screen_element_t

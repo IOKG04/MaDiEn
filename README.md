@@ -14,11 +14,12 @@ As of currently, that specifically means *my* terminal, though I intend on makin
 The engine should incoorporate anything from sprites to post processing effects once it is done. More specifically, these are the goals:  
 - [ ] Buffers
   - [x] Displaying a buffer in the terminal
-    - [ ] Enabling (true) color
-  - [ ] Combining buffers in different ways
-    - [ ] Transparency
+    - [x] Enabling (true) color
+  - [x] Combining buffers in different ways
+    - [x] Transparency
   - [ ] Other kinds of buffers / specialized buffers
-    - [ ] Text fields
+    - [x] Text fields
     - [ ] Number fields
+    - [ ] Frameing buffers
   - [ ] Loading sprite data from image files (.qoi probably)
 - [ ] Post processing
