@@ -40,13 +40,15 @@ void setup_screen(mde_flags_t flags){
     // show licensing message
     #if MDE_LICENSING_MESSAGE
         // display MaDiEn licensing information
-        #if MDE_LICENSING_MESSAGE_CHANGE == 0
-            printf("\x1b[2J\x1b[HThis software uses MaDiEn Copyright (c) 2024, https://github.com/IOKG04, licensed under the MIT-Festival-Light License (https://github.com/IOKG04/MaDiEn/blob/master/LICENSE).\n");
-        #else
+        #if MDE_LICENSING_MESSAGE_CHANGE
             printf("\x1b[2J\x1b[HThis software uses a modified version of MaDiEn Copyright (c) 2024, https://github.com/IOKG04, licensed under the MIT-Festival-Light License (https://github.com/IOKG04/MaDiEn/blob/master/LICENSE).\n");
+        #else
+            printf("\x1b[2J\x1b[HThis software uses MaDiEn Copyright (c) 2024, https://github.com/IOKG04, licensed under the MIT-Festival-Light License (https://github.com/IOKG04/MaDiEn/blob/master/LICENSE).\n");
         #endif
         sleep(MDE_LICENSING_MESSAGE_DELAY);
-        printf("\x1b[2J");
+        #if MDE_LICENSING_MESSAGE_CLEAR
+            printf("\x1b[2J");
+        #endif
     #endif
 }
 // sets display flags

@@ -67,6 +67,9 @@ void eb_clear(ebuffer_t *buf, screen_element_t e);
 // draws src onto dest, such that {0, 0} in src space is {offs_x, offs_y} is dest space
 void eb_draw(ebuffer_t *dest, ebuffer_t src, int offs_x, int offs_y, mde_flags_t flags);
 
+// returns element at {x, y} in buf
+screen_element_t eb_get(ebuffer_t buf, size_t x, size_t y);
+
 // prints buf to terminal, such that {0, 0} in buf space is at {offs_x, offs_y} in terminal space (zero based)
 void eb_print(ebuffer_t buf, int offs_x, int offs_y);
 

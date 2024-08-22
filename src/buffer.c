@@ -52,9 +52,12 @@ void eb_free(ebuffer_t *buf){
 
 // sets element in buf at {x, y} to e
 int eb_set(ebuffer_t *buf, size_t x, size_t y, screen_element_t e){
+    #if MDE_BUFFER_INDEX_CHECK == 2
+        if(x >= buf->width || x < 0 || y >= buf->height || y < 0) return 1;
+    #endif
     size_t i = eb_get_index(x, y, (*buf));
-    #if MDE_BUFFER_INDEX_CHECK
-        if(i >= buf->width * buf->height) return 1;
+    #if MDE_BUFFER_INDEX_CHECK == 1
+        if(i < 0 || i >= buf->width * buf->height) return 1;
     #endif
     buf->data[i] = e;
     return 0;
@@ -77,6 +80,18 @@ void eb_draw(ebuffer_t *dest, ebuffer_t src, int offs_x, int offs_y, mde_flags_t
             }
         }
     }
+}
+
+// returns element at {x, y} in buf
+screen_element_t eb_get(ebuffer_t buf, size_t x, size_t y){
+    #if MDE_BUFFER_INDEX_CHECK == 2
+        if(x < 0 || x >= buf.width || y < 0 || y >= buf.height) return SE_NULL;
+    #endif
+    size_t i = eb_get_index(x, y, buf);
+    #if MDE_BUFFER_INDEX_CHECK == 1
+        if(i < 0 || i >= buf.width * buf.height) return SE_NULL;
+    #endif
+    return buf.data[i];
 }
 
 // prints buf to terminal, such that {0, 0} in buf space is at {offs_x, offs_y} in terminal space (zero based)
