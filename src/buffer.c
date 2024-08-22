@@ -3,7 +3,7 @@
 |                                                |
 | Copyright (c) 2024, https://github.com/IOKG04  |
 | Licensed under MIT-Festival-Light, available   |
-| at LICENSES/MIT-FL                             |
+| at https://github.com/IOKG04/Licenses/blob/master/MIT-FL/MIT-Festival-Light |
 \************************************************/
 
 #include "buffer.h"

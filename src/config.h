@@ -3,7 +3,7 @@
 |                                                |
 | Copyright (c) 2024, https://github.com/IOKG04  |
 | Licensed under MIT-Festival-Light, available   |
-| at LICENSES/MIT-FL                             |
+| at https://github.com/IOKG04/Licenses/blob/master/MIT-FL/MIT-Festival-Light |
 |                                                |
 | This file is exempt from the second condition  |
 | described in the License. As a result one is   |
@@ -39,7 +39,7 @@
 
 // whether to check that indexes are within buffer bounds
 // 0: No checks at all
-// 1: Check if complete index is within bounds
+// 1: Check if complete index is within bounds (recommended)
 // 2: Check if x and y index are within bounds
 #define MDE_BUFFER_INDEX_CHECK 1
 // whether to check buffers can be initialized / freed
